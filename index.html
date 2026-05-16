@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tharusha Chamikara — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1a1a24;
+    --border: rgba(255,255,255,0.07);
+    --accent: #7ef2b4;
+    --accent2: #5bb8f5;
+    --accent3: #f2b67e;
+    --text: #e8e8f0;
+    --muted: #8888a0;
+    --faint: #333344;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(126,242,180,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: 30%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(91,184,245,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ─── AVATAR ─── */
+  .avatar-wrapper {
+    margin-bottom: 1.75rem;
+    display: inline-block;
+    position: relative;
+    width: 96px;
+    height: 96px;
+  }
+
+  /* Spinning conic-gradient ring */
+  .avatar-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent) 0deg, transparent 200deg, var(--accent) 360deg);
+    animation: spin 6s linear infinite;
+    z-index: 0;
+  }
+
+  /* Soft glow halo */
+  .avatar-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(126,242,180,0.15) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50%       { opacity: 1; }
+  }
+
+  /* The actual image */
+  .avatar {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--bg);
+    display: block;
+  }
+
+  /* Fallback initials — shown if image fails to load */
+  .avatar-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.35rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    user-select: none;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 span {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(126,242,180,0.5);
+  }
+
+  .hero-bio {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: #0a0a0f;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 100px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(126,242,180,0.25); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 100px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.2); background: var(--surface); }
+
+  /* ─── HERO VISUAL ─── */
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+
+  .card-stack { position: relative; width: 340px; height: 380px; }
+
+  .floating-card {
+    position: absolute;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .floating-card:nth-child(1) { top: 0; left: 0; width: 260px; transform: rotate(-3deg); }
+  .floating-card:nth-child(2) { top: 60px; right: 0; width: 220px; transform: rotate(2deg); }
+  .floating-card:nth-child(3) { bottom: 20px; left: 20px; width: 280px; transform: rotate(-1deg); }
+
+  .card-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .card-value { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--text); margin-bottom: 0.4rem; }
+  .card-sub { font-size: 0.78rem; color: var(--muted); }
+  .card-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+
+  h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 3rem; line-height: 1.15; }
+
+  /* ─── SKILLS ─── */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .skill-card:hover { border-color: rgba(255,255,255,0.14); transform: translateY(-2px); }
+
+  .skill-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; border-radius: 16px 16px 0 0; }
+  .skill-card.green::before { background: var(--accent); }
+  .skill-card.blue::before  { background: var(--accent2); }
+  .skill-card.amber::before { background: var(--accent3); }
+
+  .skill-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+  .skill-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1rem; margin-bottom: 0.75rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+
+  .tag { font-family: 'DM Mono', monospace; font-size: 0.68rem; padding: 0.25rem 0.65rem; background: var(--faint); border-radius: 100px; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* ─── EXPERIENCE ─── */
+  .exp-timeline { position: relative; padding-left: 2rem; }
+  .exp-timeline::before { content: ''; position: absolute; top: 0; left: 0; width: 1px; height: 100%; background: var(--faint); }
+  .exp-item { position: relative; margin-bottom: 3rem; padding-left: 2rem; }
+  .exp-item::before { content: ''; position: absolute; left: -2rem; top: 0.4rem; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(126,242,180,0.12); }
+  .exp-date { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent); letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .exp-role { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: 0.25rem; }
+  .exp-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .exp-bullets li { font-size: 0.9rem; color: var(--muted); padding-left: 1.2rem; position: relative; line-height: 1.6; }
+  .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; top: 0.1em; }
+
+  /* ─── PROJECTS ─── */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-card:hover { border-color: rgba(255,255,255,0.14); transform: translateY(-3px); }
+  .project-number { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--faint); letter-spacing: 0.08em; }
+  .project-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; line-height: 1.3; color: var(--text); }
+  .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; flex: 1; }
+
+  .project-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .project-link { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); text-decoration: none; letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap; }
+  .project-link:hover { text-decoration: underline; }
+
+  /* ─── CONTACT ─── */
+  .contact-section { text-align: center; padding: 6rem 3rem 8rem; position: relative; }
+  .contact-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 300px; background: radial-gradient(ellipse, rgba(126,242,180,0.05) 0%, transparent 70%); pointer-events: none; }
+  .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 2.5rem; }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  .contact-link:hover { border-color: var(--accent); background: rgba(126,242,180,0.06); color: var(--accent); }
+
+  /* ─── FOOTER ─── */
+  footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--faint); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0 3rem; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-content > * { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+  .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+  .hero-visual { animation: fadeUp 0.8s ease 0.5s forwards; opacity: 0; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+    .hero-visual { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .contact-section { padding: 4rem 1.5rem 6rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    .divider { margin: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"></div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="max-width:1100px; margin:0 auto;">
+  <div class="hero-content">
+    <div class="hero-tag">Available for opportunities</div>
+
+    <div class="avatar-wrapper">
+      <img
+        class="avatar"
+        src="myphoto.jpg"
+        alt="Tharusha Chamikara Pasqual"
+        onerror="this.style.display='none'; document.getElementById('av-fallback').style.display='flex';"
+      />
+      <div class="avatar-fallback" id="av-fallback" style="display:none;">TCP</div>
+    </div>
+
+    <h1>Tharusha<br><span>Chamikara</span><br>Pasqual</h1>
+    <p class="hero-bio">Computer Science undergraduate at University of Westminster. Building AI-driven software solutions across full-stack, Power BI, and NLP — with real-world impact from pharmaceutical manufacturing to healthcare.</p>
+    <div class="hero-ctas">
+      <a href="mailto:tharushachamikara435@gmail.com" class="btn-primary">Get in touch ↗</a>
+      <a href="https://github.com/chamikarapasquel" target="_blank" class="btn-secondary">GitHub →</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="card-stack">
+      <div class="floating-card">
+        <div class="card-label">Current status</div>
+        <div class="card-value">BSc Computer Science</div>
+        <div class="card-sub"><span class="card-dot" style="background:var(--accent)"></span>University of Westminster · 2022–2026</div>
+      </div>
+      <div class="floating-card">
+        <div class="card-label">Stack</div>
+        <div class="card-value">MERN + Python</div>
+        <div class="card-sub">AI/ML · Azure · Power BI</div>
+      </div>
+      <div class="floating-card">
+        <div class="card-label">Internship</div>
+        <div class="card-value">Lina Manufacturing</div>
+        <div class="card-sub"><span class="card-dot" style="background:var(--accent3)"></span>Digital Transformation · Aug 2024–May 2025</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Capabilities</div>
+  <h2>What I work with</h2>
+  <div class="skills-grid">
+    <div class="skill-card green">
+      <div class="skill-icon">💻</div>
+      <div class="skill-title">Full-Stack Development</div>
+      <p style="font-size:0.85rem;color:var(--muted);">Building end-to-end web applications with modern frameworks and RESTful APIs.</p>
+      <div class="skill-tags">
+        <span class="tag">React</span><span class="tag">Angular</span><span class="tag">Node.js</span>
+        <span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">MySQL</span>
+      </div>
+    </div>
+    <div class="skill-card blue">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-title">AI / Machine Learning</div>
+      <p style="font-size:0.85rem;color:var(--muted);">NLP, transformer models, and ML pipelines for practical intelligent systems.</p>
+      <div class="skill-tags">
+        <span class="tag">Python</span><span class="tag">DistilBERT</span><span class="tag">TF-IDF</span>
+        <span class="tag">NLP</span><span class="tag">Streamlit</span>
+      </div>
+    </div>
+    <div class="skill-card amber">
+      <div class="skill-icon">📊</div>
+      <div class="skill-title">Data & Business Intelligence</div>
+      <p style="font-size:0.85rem;color:var(--muted);">Interactive dashboards and real-time analytics that drive operational decisions.</p>
+      <div class="skill-tags">
+        <span class="tag">Power BI</span><span class="tag">Power Apps</span><span class="tag">Azure</span>
+        <span class="tag">SQL</span><span class="tag">Data Analytics</span>
+      </div>
+    </div>
+    <div class="skill-card green">
+      <div class="skill-icon">⚙️</div>
+      <div class="skill-title">Languages & Tools</div>
+      <p style="font-size:0.85rem;color:var(--muted);">Strong multi-language foundation for diverse engineering challenges.</p>
+      <div class="skill-tags">
+        <span class="tag">JavaScript</span><span class="tag">Java</span><span class="tag">C#</span>
+        <span class="tag">Python</span><span class="tag">Git</span><span class="tag">GitHub</span>
+      </div>
+    </div>
+    <div class="skill-card blue">
+      <div class="skill-icon">🎮</div>
+      <div class="skill-title">Game Dev & Algorithms</div>
+      <p style="font-size:0.85rem;color:var(--muted);">AI systems, pathfinding, and procedural generation in Unity with C#.</p>
+      <div class="skill-tags">
+        <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">A* Search</span>
+        <span class="tag">FSM</span><span class="tag">NavMesh</span>
+      </div>
+    </div>
+    <div class="skill-card amber">
+      <div class="skill-icon">🚀</div>
+      <div class="skill-title">Project Management</div>
+      <p style="font-size:0.85rem;color:var(--muted);">Agile collaboration, process automation, and digital transformation at enterprise scale.</p>
+      <div class="skill-tags">
+        <span class="tag">Agile</span><span class="tag">Figma</span><span class="tag">KAIZEN</span><span class="tag">Training</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Work</div>
+  <h2>Experience</h2>
+  <div class="exp-timeline">
+    <div class="exp-item">
+      <div class="exp-date">Aug 2024 — May 2025</div>
+      <div class="exp-role">Digital Transformation Intern</div>
+      <div class="exp-company">Lina Manufacturing (Pvt) Ltd — a Sunshine Healthcare Enterprise</div>
+      <ul class="exp-bullets">
+        <li>Designed and deployed Power Apps for near-miss reporting, incident management, and KAIZEN process improvement workflows.</li>
+        <li>Built interactive Power BI dashboards for KPI tracking, plan-vs-actual analysis, and production performance monitoring with real-time Microsoft Teams data integration.</li>
+        <li>Created dynamic data visualizations and reporting solutions to support operational decision-making.</li>
+        <li>Delivered IT policy training sessions to Production and R&amp;D teams, promoting digital adoption and compliance across the organization.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Work</div>
+  <h2>Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-number">01 / AI Healthcare</div>
+      <div class="project-title">AI-Powered Prescription Assistance &amp; Drug Interaction Detection</div>
+      <div class="project-desc">Architected an intelligent healthcare system using DistilBERT, TF-IDF and ML to predict diseases from symptoms, recommend drugs, and detect drug–drug interactions with real-time checking via a Streamlit interface.</div>
+      <div class="project-footer">
+        <div class="project-tech"><span class="tag">Python</span><span class="tag">DistilBERT</span><span class="tag">NLP</span><span class="tag">Streamlit</span></div>
+        <a href="https://github.com/chamikarapasquel" target="_blank" class="project-link">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-number">02 / MERN App</div>
+      <div class="project-title">GiveBack — Community Donation Web Application</div>
+      <div class="project-desc">Full-stack MERN application enabling community-based donation management — item donations, requests, and user interactions. Contributed as Full-Stack Developer including UI/UX prototyping in Figma.</div>
+      <div class="project-footer">
+        <div class="project-tech"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Figma</span></div>
+        <a href="https://github.com/chamikarapasquel" target="_blank" class="project-link">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-number">03 / Game AI</div>
+      <div class="project-title">Procedural Terrain &amp; Game AI System</div>
+      <div class="project-desc">Unity-based Game AI integrating FSM behaviours, A* pathfinding, NavMesh navigation, and procedural terrain generation for intelligent NPC interactions and dynamic gameplay environments.</div>
+      <div class="project-footer">
+        <div class="project-tech"><span class="tag">C#</span><span class="tag">Unity</span><span class="tag">A*</span><span class="tag">NavMesh</span></div>
+        <a href="https://github.com/chamikarapasquel" target="_blank" class="project-link">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-number">04 / REST API</div>
+      <div class="project-title">Health System REST API</div>
+      <div class="project-desc">RESTful healthcare management API in Java with JAX-RS, supporting patient management, appointment scheduling, prescription handling, and CRUD medical records through object-oriented architecture.</div>
+      <div class="project-footer">
+        <div class="project-tech"><span class="tag">Java</span><span class="tag">JAX-RS</span><span class="tag">REST API</span></div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-number">05 / Algorithms</div>
+      <div class="project-title">Sliding Puzzle Pathfinding Game</div>
+      <div class="project-desc">Java-based puzzle game leveraging data structures and algorithmic problem-solving techniques, optimizing gameplay functionality and performance through efficient pathfinding algorithms.</div>
+      <div class="project-footer">
+        <div class="project-tech"><span class="tag">Java</span><span class="tag">Algorithms</span><span class="tag">Data Structures</span></div>
+      </div>
+    </div>
+    <div class="project-card" style="background: linear-gradient(135deg, rgba(126,242,180,0.05) 0%, var(--surface) 100%);">
+      <div class="project-number">Company Projects</div>
+      <div class="project-title">Power BI Dashboards &amp; Power Apps Suite</div>
+      <div class="project-desc">KPI monitoring, plan-vs-actual performance, weighted average batch yield dashboards with real-time Excel/Teams integration. Plus KAIZEN and incident management Power Apps.</div>
+      <div class="project-footer">
+        <div class="project-tech"><span class="tag">Power BI</span><span class="tag">Power Apps</span><span class="tag">Azure</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="section-label" style="justify-content:center;margin-bottom:1rem;">Contact</div>
+  <h2 style="margin-bottom:0.75rem;">Let's build something together</h2>
+  <p style="color:var(--muted);font-size:1rem;max-width:460px;margin:0 auto;">Open to internships, collaborations, and full-time roles. Reach out anytime.</p>
+  <div class="contact-links">
+    <a href="mailto:tharushachamikara435@gmail.com" class="contact-link">✉ tharushachamikara435@gmail.com</a>
+    <a href="https://linkedin.com/in/chamikara-pasquel" target="_blank" class="contact-link">in LinkedIn</a>
+    <a href="https://github.com/chamikarapasquel" target="_blank" class="contact-link">⌥ GitHub</a>
+    <a href="tel:+94756046730" class="contact-link">☏ +94 75 604 6730</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Tharusha Chamikara Pasqual</span>
+  <span>Colombo, Sri Lanka</span>
+</footer>
+
+</body>
+</html>
